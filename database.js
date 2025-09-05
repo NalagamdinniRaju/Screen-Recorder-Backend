@@ -3,13 +3,11 @@ const path = require("path");
 
 const dbPath = path.join(__dirname, "database.db");
 
-// Initialize database
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error("Error opening database:", err.message);
   } else {
     console.log("Connected to SQLite database");
-    // Create recordings table if it doesn't exist
     db.run(
       `CREATE TABLE IF NOT EXISTS recordings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,9 +27,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Database operations
 const dbOps = {
-  // Insert new recording
   insertRecording: (filename, filepath, filesize) => {
     return new Promise((resolve, reject) => {
       const stmt = db.prepare(
@@ -54,7 +50,6 @@ const dbOps = {
     });
   },
 
-  // Get all recordings
   getAllRecordings: () => {
     return new Promise((resolve, reject) => {
       db.all(
@@ -70,7 +65,6 @@ const dbOps = {
     });
   },
 
-  // Get recording by ID
   getRecordingById: (id) => {
     return new Promise((resolve, reject) => {
       db.get(`SELECT * FROM recordings WHERE id = ?`, [id], (err, row) => {
