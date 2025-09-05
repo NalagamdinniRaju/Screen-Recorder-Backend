@@ -9,8 +9,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
     console.error("Error opening database:", err.message);
   } else {
     console.log("Connected to SQLite database");
-    db.run(`DROP TABLE IF EXISTS recordings`);
-
     // Create recordings table if it doesn't exist
     db.run(
       `CREATE TABLE IF NOT EXISTS recordings (
@@ -80,19 +78,6 @@ const dbOps = {
           reject(err);
         } else {
           resolve(row);
-        }
-      });
-    });
-  },
-
-  // Delete recording
-  deleteRecording: (id) => {
-    return new Promise((resolve, reject) => {
-      db.run(`DELETE FROM recordings WHERE id = ?`, [id], function (err) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ deletedRows: this.changes });
         }
       });
     });
